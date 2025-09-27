@@ -5,7 +5,7 @@ package com.optimagrowth.license.controller;
 
 import static java.util.Collections.singletonMap;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +50,7 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 	/**
 	 * handleIOException - Handles all the Authentication Exceptions of the application. 
 	 *@param request
-	 *@param exception
+	 *@param e
 	 *@return ResponseEntity<ResponseWrapper>
 	 * @user ihuaylupo
 	 * @since 2018-09-12 

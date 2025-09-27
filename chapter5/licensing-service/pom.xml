@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.3.RELEASE</version>
+        <version>3.3.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.optimagrowth</groupId>
@@ -14,13 +14,18 @@
 	<name>License Service</name>
 	<description>Ostock Licensing Service</description>
 
-	<properties>
-		<java.version>11</java.version>
-		<docker.image.prefix>ostock</docker.image.prefix>
-		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
-	</properties>
+    <properties>
+        <java.version>21</java.version>
+        <docker.image.prefix>ostock</docker.image.prefix>
+        <spring-cloud.version>2023.0.3</spring-cloud.version>
+    </properties>
 
 	<dependencies>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-hateoas</artifactId>
@@ -56,13 +61,8 @@
 		</dependency>
 		<dependency>
 		  <groupId>org.springframework.boot</groupId>
-		  <artifactId>spring-boot-starter-data-jpa</artifactId>  
+		  <artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<dependency>
-		    <groupId>org.postgresql</groupId>
-		    <artifactId>postgresql</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
@@ -81,37 +81,37 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<!-- This plugin is used to create a docker image and publish the image to docker hub-->
-			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>dockerfile-maven-plugin</artifactId>
-				<version>1.4.13</version>
-				<configuration>
-					<repository>${docker.image.prefix}/${project.artifactId}</repository>
-	                <tag>${project.version}</tag>
-					<buildArgs>
-						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-					</buildArgs>
-				</configuration>
-				<executions>
-					<execution>
-						<id>default</id>
-						<phase>install</phase>
-						<goals>
-							<goal>build</goal>
-							<goal>push</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
+            <!-- Jib plugin to build Docker images -->
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.0</version>
+                <configuration>
+                    <from>
+                        <image>openjdk:21-slim</image>
+                    </from>
+                    <to>
+                        <image>ostock/${project.artifactId}:${project.version}</image>
+                    </to>
+                    <container>
+                        <mainClass>com.optimagrowth.license.LicenseServiceApplication</mainClass>
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+                        <jvmFlags>
+                            <jvmFlag>-Xms512m</jvmFlag>
+                            <jvmFlag>-Xmx1024m</jvmFlag>
+                        </jvmFlags>
+                    </container>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

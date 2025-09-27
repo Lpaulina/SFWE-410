@@ -1,24 +1,24 @@
 spring:
   application:
-    name: config-server
+    name: configserver
   profiles:
-    active:
-    - native, git
+    active: native
   cloud:
     config:
       server:
         native:
           search-locations: classpath:/config
-        #git:
-         # uri: https://github.com/ihuaylupo/config.git
-          #searchPaths: licensingservice
-    
+#          search-locations: file:///C:Users/pauli/OneDrive/Documents/GitHub/manning-smia/chapter5
+#        git:
+#          uri: https://github.com/Lpaulina/SFWE-410.git
+#          default-label: chapter5
+#          search-paths: configserver/src/main/resources/config
+
 server:
   port: 8071
   
 encrypt:
   key: fje83Ki8403Iod87dne7Yjsl3THueh48jfuO9j4U2hf64Lo 
-
 
 #Enable all Spring Boot Actuator endpoints.
 management:
