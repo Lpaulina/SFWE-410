@@ -3,15 +3,16 @@ spring:
     name: config-server
   profiles:
     active:
-    - native
+    - git
   cloud:
     config:
       server:
-        native:
-          search-locations: classpath:/config
-        #git:
-         #   uri: https://github.com/ihuaylupo/config.git
-         #   searchPaths: licensingservice
+#        native:
+#          search-locations: classpath:/config
+        git:
+            uri: https://github.com/Lpaulina/SFWE-410.git
+            default-label: chapter6
+            searchPaths: chapter6/Final/configserver/src/main/resources/config
     
 server:
   port: 8071
