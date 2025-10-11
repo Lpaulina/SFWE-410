@@ -90,15 +90,11 @@ services:
       CONFIGSERVER_PORT:   "8071"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"
-      EUREKA_URI: "http://eurekaserver:8070/eureka/,http://eurek-server-2:8070/eureka/"
+#      EUREKA_URI: "http://eurekaserver-1:8070/eureka/,http://eurek-server-2:8070/eureka/,,http://eurek-server-3:8070/eureka/"
     depends_on:
       database:
         condition: service_healthy
       configserver:
-        condition: service_started
-      eurekaserver:
-        condition: service_started
-      eurekaserver-2:
         condition: service_started
     ports:
       - "8080:8080"
@@ -113,15 +109,11 @@ services:
       CONFIGSERVER_PORT:   "8071"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"
-      EUREKA_URI: "http://eurekaserver:8070/eureka/,http://eurek-server-2:8070/eureka/"
+#      EUREKA_URI: "http://eurekaserver-1:8070/eureka/,http://eurek-server-2:8070/eureka/,,http://eurek-server-3:8070/eureka/"
     depends_on:
       database:
         condition: service_healthy
       configserver:
-        condition: service_started
-      eurekaserver:
-        condition: service_started
-      eurekaserver-2:
         condition: service_started
     ports:
       - "8081:8081"

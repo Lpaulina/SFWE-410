@@ -6,3 +6,5 @@ spring:
     cloud:
         config: 
             uri: http://configserver:8071
+    config:
+      import: "optional:configserver:${SPRING_CLOUD_CONFIG_URI:http://configserver:8071}"
