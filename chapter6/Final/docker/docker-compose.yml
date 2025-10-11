@@ -30,19 +30,58 @@ services:
       backend:
         aliases:
           - "configserver"
-  eurekaserver:
+
+  eurekaserver-1:
     image: ostock/eurekaserver:0.0.1-SNAPSHOT
-    ports:
-      - "8070:8070"
     depends_on:
+      configserver:
+        condition: service_started
       database:
         condition: service_healthy
-      configserver:
-        condition: service_started  
+    environment:
+      - SPRING_PROFILES_ACTIVE=peer1
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8071
+    ports:
+      - "8070:8070"
     networks:
       backend:
         aliases:
-          - "eurekaserver"
+          - "eurekaserver-1"
+
+  eurekaserver-2:
+    image: ostock/eurekaserver:0.0.1-SNAPSHOT
+    depends_on:
+      configserver:
+        condition: service_started
+      database:
+        condition: service_healthy
+    environment:
+      - SPRING_PROFILES_ACTIVE=peer2
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8071
+    ports:
+      - "8072:8070"
+    networks:
+      backend:
+        aliases:
+          - "eurekaserver-2"
+
+  eurekaserver-3:
+    image: ostock/eurekaserver:0.0.1-SNAPSHOT
+    depends_on:
+      configserver:
+        condition: service_started
+      database:
+        condition: service_healthy
+    environment:
+      - SPRING_PROFILES_ACTIVE=peer3
+      - SPRING_CLOUD_CONFIG_URI=http://configserver:8071
+    ports:
+      - "8073:8070"
+    networks:
+      backend:
+        aliases:
+          - "eurekaserver-3"
+
   licensingservice:
     image: ostock/licensing-service:0.0.3-SNAPSHOT
     environment:
@@ -51,15 +90,21 @@ services:
       CONFIGSERVER_PORT:   "8071"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"
+      EUREKA_URI: "http://eurekaserver:8070/eureka/,http://eurek-server-2:8070/eureka/"
     depends_on:
       database:
         condition: service_healthy
       configserver:
         condition: service_started
+      eurekaserver:
+        condition: service_started
+      eurekaserver-2:
+        condition: service_started
     ports:
       - "8080:8080"
     networks:
       - backend
+
   organizationservice:
     image: ostock/organization-service:0.0.1-SNAPSHOT
     environment:
@@ -68,10 +113,15 @@ services:
       CONFIGSERVER_PORT:   "8071"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"
+      EUREKA_URI: "http://eurekaserver:8070/eureka/,http://eurek-server-2:8070/eureka/"
     depends_on:
       database:
         condition: service_healthy
       configserver:
+        condition: service_started
+      eurekaserver:
+        condition: service_started
+      eurekaserver-2:
         condition: service_started
     ports:
       - "8081:8081"
