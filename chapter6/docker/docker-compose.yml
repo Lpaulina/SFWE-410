@@ -90,7 +90,6 @@ services:
       CONFIGSERVER_PORT:   "8071"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"
-#      EUREKA_URI: "http://eurekaserver-1:8070/eureka/,http://eurek-server-2:8070/eureka/,,http://eurek-server-3:8070/eureka/"
     depends_on:
       database:
         condition: service_healthy
@@ -98,6 +97,24 @@ services:
         condition: service_started
     ports:
       - "8080:8080"
+    networks:
+      - backend
+
+  licensingservice-2:
+    image: ostock/licensing-service:0.0.3-SNAPSHOT
+    environment:
+      PROFILE: "dev"
+      CONFIGSERVER_URI: "http://configserver:8071"
+      CONFIGSERVER_PORT:   "8071"
+      DATABASESERVER_PORT: "5432"
+      ENCRYPT_KEY:       "IMSYMMETRIC"
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+    ports:
+      - "8082:8080"
     networks:
       - backend
 
@@ -109,7 +126,6 @@ services:
       CONFIGSERVER_PORT:   "8071"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"
-#      EUREKA_URI: "http://eurekaserver-1:8070/eureka/,http://eurek-server-2:8070/eureka/,,http://eurek-server-3:8070/eureka/"
     depends_on:
       database:
         condition: service_healthy
