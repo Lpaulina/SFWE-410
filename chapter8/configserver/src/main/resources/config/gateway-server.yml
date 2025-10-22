@@ -38,6 +38,15 @@ spring:
           uri: https://www.google.com
           predicates:
             - Path=/google/**
+          filters:
+            - RedirectTo=302, https://www.google.com
+        - id: arizona-edu
+          uri: https://www.arizona.edu
+          predicates:
+            - Path=/arizona/**
+          filters:
+            - RedirectTo=302, https://www.arizona.edu
+
 
 
        
