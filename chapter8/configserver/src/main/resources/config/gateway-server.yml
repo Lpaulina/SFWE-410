@@ -43,7 +43,7 @@ spring:
         - id: arizona-edu
           uri: https://www.arizona.edu
           predicates:
-            - Path=/arizona/**
+            - Path=/arizona-edu/**
           filters:
             - RedirectTo=302, https://www.arizona.edu
 
