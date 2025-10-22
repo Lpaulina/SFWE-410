@@ -10,30 +10,30 @@ eureka:
     serviceUrl:
       defaultZone: http://eurekaserver:8070/eureka/
       
-spring:
-  cloud:
-    gateway:
-        discovery.locator:
-          enabled: true
-          lowerCaseServiceId: true
-
 #spring:
 #  cloud:
-#    loadbalancer.ribbon.enabled: false
 #    gateway:
-#        routes:
-#        - id: organization-service
-#          uri: lb://organization-service
-#          predicates:
-#          - Path=/organization-service/**
-#          filters:
-#          - RewritePath=/organization/(?<path>.*), /$\{path}
-#        - id: licensing-service
-#          uri: lb://licensing-service
-#          predicates:
-#          - Path=/license/**
-#          filters:
-#          - RewritePath=/license/(?<path>.*), /$\{path}
+#        discovery.locator:
+#          enabled: true
+#          lowerCaseServiceId: true
+
+spring:
+  cloud:
+    loadbalancer.ribbon.enabled: false
+    gateway:
+        routes:
+        - id: organization-service
+          uri: lb://organization-service
+          predicates:
+          - Path=/organization-service-1/**
+          filters:
+          - RewritePath=/organization/(?<path>.*), /$\{path}
+        - id: licensing-service
+          uri: lb://licensing-service
+          predicates:
+          - Path=/license/**
+          filters:
+          - RewritePath=/license/(?<path>.*), /$\{path}
 #        - id: google
 #          uri: https://www.google.com
 #          predicates:
