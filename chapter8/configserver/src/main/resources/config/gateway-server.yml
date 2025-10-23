@@ -34,18 +34,18 @@ spring:
           - Path=/license/**
           filters:
           - RewritePath=/license/(?<path>.*), /$\{path}
-#        - id: google
-#          uri: https://www.google.com
-#          predicates:
-#            - Path=/google/**
-#          filters:
-#            - RedirectTo=302, https://www.google.com
-#        - id: arizona-edu
-#          uri: https://www.arizona.edu
-#          predicates:
-#            - Path=/arizona-edu/**
-#          filters:
-#            - RedirectTo=302, https://www.arizona.edu
+        - id: google
+          uri: https://www.google.com
+          predicates:
+            - Path=/google/**
+          filters:
+            - RedirectTo=302, https://www.google.com
+        - id: arizona-edu
+          uri: https://www.arizona.edu
+          predicates:
+            - Path=/arizona-edu/**
+          filters:
+            - RedirectTo=302, https://www.arizona.edu
 
 
 
