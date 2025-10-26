@@ -23,25 +23,25 @@ public class OrganizationController {
     @Autowired
     private OrganizationService service;
 
-    @RolesAllowed({ "ADMIN", "USER" })  
+    @RolesAllowed({ "ds-ostock-admin", "ds-ostock-user" })
     @RequestMapping(value="/{organizationId}",method = RequestMethod.GET)
     public ResponseEntity<Organization> getOrganization( @PathVariable("organizationId") String organizationId) {
         return ResponseEntity.ok(service.findById(organizationId));
     }
 
-    @RolesAllowed({ "ADMIN", "USER" }) 
+    @RolesAllowed({ "ds-ostock-admin", "ds-ostock-user" })
     @RequestMapping(value="/{organizationId}",method = RequestMethod.PUT)
     public void updateOrganization( @PathVariable("organizationId") String id, @RequestBody Organization organization) {
         service.update(organization);
     }
 
-    @RolesAllowed({ "ADMIN", "USER" }) 
+    @RolesAllowed({ "ds-ostock-admin", "ds-ostock-user" })
     @PostMapping
     public ResponseEntity<Organization>  saveOrganization(@RequestBody Organization organization) {
     	return ResponseEntity.ok(service.create(organization));
     }
 
-    @RolesAllowed("ADMIN")    
+    @RolesAllowed("ds-ostock-admin")
     @DeleteMapping(value="/{organizationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteLicense(@PathVariable("organizationId") String organizationId) {

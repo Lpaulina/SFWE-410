@@ -100,26 +100,25 @@ services:
     networks:
       - backend
 
-  keycloak:
-    image: jboss/keycloak
-    restart: always
-    environment:
-      KEYCLOAK_VERSION: 6.0.1
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
-    volumes:
-        - ./realm-export.json:/opt/jboss/keycloak/realm-export.json
-    command:
-      - "-b 0.0.0.0"
-      - "-Dkeycloak.import=/opt/jboss/keycloak/realm-export.json"
-      - "-Dkeycloak.profile.feature.scripts=enabled"
-      - "-Dkeycloak.profile.feature.upload_scripts=enabled"
-    ports:
-      - "8080:8080"
-    networks:
-      backend:
-        aliases:
-          - "keycloak"
+#  keycloak:
+#    image: quay.io/keycloak/keycloak:26.4.2
+#    restart: always
+#    environment:
+#      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+#      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+#      KC_FEATURES: token-exchange,scripts
+#    command:
+#      - start-dev
+#      - --features=scripts,token-exchange
+#      - --import-realm
+#    volumes:
+#      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      backend:
+#        aliases:
+#          - "keycloak"
 
 networks:
   backend:

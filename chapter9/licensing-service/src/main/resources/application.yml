@@ -6,6 +6,8 @@ spring:
     cloud:
         config: 
             uri: http://configserver:8071
+    config:
+      import: optional:configserver:http://configserver:8071
 
 logging:
   level:

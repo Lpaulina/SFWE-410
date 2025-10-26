@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -23,7 +22,6 @@ import com.optimagrowth.license.utils.UserContextInterceptor;
 @RefreshScope
 @EnableDiscoveryClient
 @EnableFeignClients
-@EnableEurekaClient
 public class LicenseServiceApplication {
 
 	public static void main(String[] args) {
@@ -31,34 +29,34 @@ public class LicenseServiceApplication {
 	}
 
 	@Bean
-	public LocaleResolver localeResolver() {
+	public LocaleResolver ostockLocaleResolver() {
 		SessionLocaleResolver localeResolver = new SessionLocaleResolver();
 		localeResolver.setDefaultLocale(Locale.US);
 		return localeResolver;
 	}
 	@Bean
-	public ResourceBundleMessageSource messageSource() {
+	public ResourceBundleMessageSource ostockMessageSource() {
 		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 		messageSource.setUseCodeAsDefaultMessage(true);
 		messageSource.setBasenames("messages");
 		return messageSource;
 	}
 
-	@SuppressWarnings("unchecked")
-	@LoadBalanced
-	@Bean
-	public RestTemplate getRestTemplate(){
-		RestTemplate template = new RestTemplate();
-        List interceptors = template.getInterceptors();
-        if (interceptors==null){
-            template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
-        }
-        else{
-            interceptors.add(new UserContextInterceptor());
-            template.setInterceptors(interceptors);
-        }
-
-        return template;
-	}
+//	@SuppressWarnings("unchecked")
+//	@LoadBalanced
+//	@Bean
+//	public RestTemplate getRestTemplate(){
+//		RestTemplate template = new RestTemplate();
+//        List interceptors = template.getInterceptors();
+//        if (interceptors==null){
+//            template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
+//        }
+//        else{
+//            interceptors.add(new UserContextInterceptor());
+//            template.setInterceptors(interceptors);
+//        }
+//
+//        return template;
+//	}
 
 }
