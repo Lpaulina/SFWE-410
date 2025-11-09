@@ -3,6 +3,7 @@ package com.optimagrowth.organization.events.source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -16,13 +17,16 @@ public class SimpleSourceBean {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleSourceBean.class);
 
+    @Value("${spring.cloud.stream.bindings.output.destination}")
+    private String topicName;
+
     @Autowired
     public SimpleSourceBean(Source source){
         this.source = source;
     }
 
     public void publishOrganizationChange(String action, String organizationId){
-       logger.debug("Sending Kafka message {} for Organization Id: {}", action, organizationId);
+       logger.debug("Sending Kafka message {} for Organization Id: {} to topic: {}", action, organizationId, topicName);
         OrganizationChangeModel change =  new OrganizationChangeModel(
                 OrganizationChangeModel.class.getTypeName(),
                 action,

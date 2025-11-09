@@ -53,7 +53,7 @@ public class OrganizationRestTemplateClient {
 		try {
 			return redisRepository.findById(organizationId).orElse(null);
 		}catch (Exception ex){
-			logger.error("Error encountered while trying to retrieve organization {} check Redis Cache.  Exception {}", organizationId, ex);
+			logger.error("Error encountered while trying to retrieve organization {} check Redis Cache. Exception: {}", organizationId, ex);
 			return null;
 		}
 	}
