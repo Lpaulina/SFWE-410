@@ -1,0 +1,66 @@
+INSTEAD OF THIS FOR PT1 STEP 6:
+kubectl create configmap pg-init-script \
+--from-literal=init.sql="$(curl -fsSL https://raw.githubusercontent.com/ihuaylupo/manning-smia/master/chapter8/docker/init.sql)" \
+--from-literal=data.sql="$(curl -fsSL https://raw.githubusercontent.com/ihuaylupo/manning-smia/master/chapter8/docker/data.sql)"
+
+RUN THIS:
+kubectl create configmap pg-init-script --from-file=init.sql=init-full.sql
+
+
+INSTEAD OF THIS FOR PT1 STEP 6:
+helm install database bitnami/postgresql \
+--set nameOverride=database \
+--set global.postgresql.postgresqlDatabase=ostock_dev \
+--set global.postgresql.postgresqlUsername=postgres \
+--set global.postgresql.postgresqlPassword=postgres \
+--set global.postgresql.servicePort=5432 \
+--set initdbScriptsConfigMap=pg-init-script \
+--set service.type=LoadBalancer
+
+RUN THIS:
+helm install database bitnami/postgresql `
+  --set nameOverride=database `
+  --set fullnameOverride=database `
+  --set auth.database=ostock_dev `
+  --set auth.username=postgres `
+  --set auth.postgresPassword=postgres `
+  --set primary.service.ports.postgresql=5432 `
+  --set service.type=LoadBalancer `
+  --set primary.initdb.scriptsConfigMap=pg-init-script
+
+
+TO INSTALL BITNAMI DO:
+- helm repo add bitnami https://charts.bitnami.com/bitnami
+- helm repo update
+
+TO GO INTO DB BASH:
+kubectl exec -it database-0 -- /opt/bitnami/scripts/postgresql/entrypoint.sh /bin/bash
+
+TO GET INTO PSQL AS POSTGRES USER AND CHANGE PASSWORD:
+psql "postgresql://postgres@localhost:5432/postgres?sslmode=disable"
+kubectl create secret generic database --from-literal=postgres-password='postgres' --namespace default --dry-run=client -o yaml | kubectl apply -f -
+
+TO DELETE EVERYTHING:
+helm uninstall database
+kubectl delete all --all
+kubectl delete pvc --all
+kubectl delete pod --all
+kubectl delete configmap --all
+kubectl delete secret --all
+
+TO CHECK DATABASE PASSWORD:
+kubectl exec -it database-0 -- /opt/bitnami/scripts/postgresql/entrypoint.sh /bin/bash
+cat /opt/bitnami/postgresql/secrets/postgres-password
+
+CHECKING INIT SCRIPT FOR DB DATA:
+ kubectl get configmap pg-init-script -o yaml
+
+GETTING INTO THE DB AND CHECKING IF THERE IS DATA:
+ kubectl exec -it database-0 -- bash
+ psql -U postgres -d ostock_dev
+ \dt
+ SELECT * FROM licenses;
+
+TO SCALE:
+kubectl scale deployment organizationservice --replicas=2
+kubectl scale deployment licensingservice --replicas=2
